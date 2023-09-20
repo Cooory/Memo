@@ -11,10 +11,6 @@ header {
 	background-color: #dddddd;
 }
 
-.contents {
-	height: 500px;	
-}
-
 .contents > .input-box {
 	width: 400px;
 }
