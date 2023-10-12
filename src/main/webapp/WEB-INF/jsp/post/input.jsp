@@ -23,7 +23,7 @@
 					<input type="text" class="form-control col-10" id="titleInput">
 				</div>
 				<textarea class="form-control mt-3" rows="7" id="contentInput"></textarea>
-				<input type="file" class="mt-2">
+				<input type="file" class="mt-2" id="fileInput">
 				<div class="d-flex justify-content-between mt-3">
 					<a href="/post/list-view" class="btn btn-secondary">목록으로</a>
 					<button type="button" class="btn btn-secondary" id="saveBtn">저장</button>
@@ -34,6 +34,10 @@
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 	</div>
 
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	
 	
 	<script>
@@ -41,6 +45,8 @@
 			$("#saveBtn").on("click", function() {
 				let title = $("#titleInput").val();
 				let content = $("#contentInput").val();
+				
+				let file = $("#fileInput")[0]
 				
 				if (title == "") {
 					alert("제목을 입력하세요");
@@ -52,10 +58,20 @@
 					return ;
 				}
 				
+				let formData = new FormData();
+				formData.append("title", title);
+				formData.append("content", content);
+				formData.append("imageFile", file.files[0]);
+				
+				
+				
 				$.ajax({
 					type:"post"
 					, url:"/post/create"
-					, data:{"title":title, "content":content}
+					, data:formData
+					, enctype:"multipart/form-data"
+					, processData:false // 파일 업로드 필수 옵션
+					, contentType:false // 파일 업로드 필수 옵
 					, success:function(data) {
 						if (data.result == "success") {
 							location.href = "/post/list-view"
@@ -74,10 +90,6 @@
 	
 	
 
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
 
 
 </body>

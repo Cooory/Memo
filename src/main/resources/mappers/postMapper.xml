@@ -12,19 +12,21 @@
 			`userId`
 			, `title`
 			, `content`
+			, `imagePath`
 		)
 		VALUE
 		(
 			#{userId}
 			, #{title}
 			, #{content}
+			, #{imagePath}
 		) 
 			
 
 	</insert>
 	
 	<select id="selectPostList" parameterType="int" 
-	resultType="com.cooory.memo.post.repository.PostRepository">
+	resultType="com.cooory.memo.post.domain.Post">
 		SELECT
 			`id`
 			, `userId`
@@ -35,9 +37,44 @@
 			, `updatedAt`
 		FROM
 			`post`
-		WHERE
-			`userId` = 
+		WHERE 
+			`userId` = #{userId}
 		ORDER BY
 			`id` DESC
+
 	</select>
+	
+	<select id="selectPost" parameterType="int"
+	resultType="com.cooory.memo.post.domain.Post">
+		SELECT
+			`id`
+			, `userId`
+			, `title`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE 
+			`id` = #{id}
+	</select>
+	
+	<update id="updatePost" parameterType="map">
+		UPDATE
+			`post`
+		SET
+			`title` = #{title}
+			, `content` = #{content}
+			, `updatedAt` = now()
+		WHERE
+			`id` = #{postId}
+	</update>
+	
+	<delete id="deletePost" parameterType="map">
+		DELETE FROM
+			`post`
+		WHERE 
+			`id` = #{postId}
+	</delete>
 </mapper>

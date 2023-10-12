@@ -14,7 +14,7 @@
 		<c:if test="${not empty userId }">
 			<div class="mr-3">${userName }님 <a href="/user/logout">로그아웃</a></div>
 		</c:if>
-	</header>
+	</header> 
 	
 	
 
